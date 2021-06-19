@@ -1,0 +1,36 @@
+.container {
+  background-color: rgb(41, 41, 41);
+  width: fit-content;
+  margin: auto;
+  margin-top: 10px;
+  padding: 5px;
+  color: #fff;
+}
+
+.row {
+  padding: 3px 0;
+  border-bottom: 0.5px solid black;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.cell {
+  height: 35px;
+  width: 90px;
+  background-color: rgb(31, 70, 0);
+  border: 0.5px solid black;
+  border-radius: 4px;
+}
+
+.cell:nth-child(even):not(:last-child) {
+  margin-right: 5px;
+}
+
+.cellActive {
+  background-color: rgb(108, 240, 0);
+}
+
+.columnActive {
+  border: 2px solid rgb(108, 240, 0);
+}
