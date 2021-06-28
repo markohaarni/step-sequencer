@@ -12,7 +12,9 @@ export default function Sequencer() {
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    Transport.bpm.rampTo(bpm, 0.1);
+    if (Transport.bpm) {
+      Transport.bpm.rampTo(bpm, 0.1);
+    }
   }, [bpm]);
 
   async function play() {
