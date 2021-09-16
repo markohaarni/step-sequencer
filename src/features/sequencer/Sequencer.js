@@ -1,8 +1,10 @@
 import StepPattern from './StepPattern';
+import IconButton from '../../components/buttons/IconButton';
 import { selectBpm, selectVolume } from './sequencerSlice';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { start, getDestination, Transport } from 'tone';
+import { MdPlayArrow, MdStop } from 'react-icons/md';
 
 export default function Sequencer() {
   const bpm = useSelector(selectBpm);
@@ -40,11 +42,11 @@ export default function Sequencer() {
   }
   return (
     <div>
-      <StepPattern playing={playing}></StepPattern>
+      <IconButton onClick={play}>
+        {!playing ? <MdPlayArrow /> : <MdStop />}
+      </IconButton>
 
-      <button className="mt10" onClick={play}>
-        {!playing ? 'Play' : 'Stop'}
-      </button>
+      <StepPattern playing={playing}></StepPattern>
     </div>
   );
 }

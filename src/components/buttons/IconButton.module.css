@@ -1,0 +1,4 @@
+.iconButton {
+  composes: button from './Button.module.css';
+  font-size: 24px;
+}
