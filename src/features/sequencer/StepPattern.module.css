@@ -5,25 +5,46 @@
   margin-top: 10px;
   padding: 5px;
   color: #fff;
+  font-size: 0.9rem;
+  border-radius: 4px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(70, 70, 70);
+  border-radius: 4px;
 }
 
 .row {
-  padding: 3px 0;
   border-bottom: 0.5px solid black;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-.cell {
-  height: 35px;
-  width: 90px;
-  background-color: rgb(31, 70, 0);
-  border: 0.5px solid black;
-  border-radius: 4px;
+.rowCells {
+  display: flex;
+  width: 650px;
 }
 
-.cell:nth-child(even):not(:last-child) {
+.cell {
+  height: 35px;
+  background-color: rgb(31, 70, 0);
+  border: 1px solid black;
+  border-radius: 4px;
+  flex: 1 1 auto;
+}
+
+/* When step length is 8th note put cells in groups of 2, 
+   so there is space between every quarter notes */
+.cell8:nth-child(2n):not(:last-child) {
+  margin-right: 5px;
+}
+
+/* When step length is 16th note put cells in groups of 4 */
+.cell16:nth-child(4n):not(:last-child) {
   margin-right: 5px;
 }
 
@@ -32,5 +53,5 @@
 }
 
 .columnActive {
-  border: 2px solid rgb(108, 240, 0);
+  border-color: rgb(108, 240, 0);
 }
