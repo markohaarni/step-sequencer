@@ -1,26 +1,36 @@
 import { useEffect, useState } from 'react';
-import { PolySynth } from 'tone';
+import {
+  PolySynth,
+  MembraneSynth,
+  DuoSynth,
+  MetalSynth,
+  PluckSynth,
+} from 'tone';
+
+const ToneInstruments = {
+  polySynth: PolySynth,
+  membraneSynth: MembraneSynth,
+  duoSynth: DuoSynth,
+  metalSynth: MetalSynth,
+  pluckSynth: PluckSynth,
+};
 
 /**
- * Create Tone.js synth
- * @returns Tone.js Polysynth
+ * Create Tone.js Instrument
+ * @returns Tone.js Instrument
  */
-export function useSynth() {
-  const [synth, setSynth] = useState();
+export function useInstrument(type) {
+  const [instrument, setInstrument] = useState();
 
   useEffect(() => {
     if (window.AudioBuffer === undefined) {
       return;
     }
 
-    const synthToCreate = new PolySynth().toDestination();
+    const instumentToCreate = new ToneInstruments[type]().toDestination();
 
-    setSynth(synthToCreate);
+    setInstrument(instumentToCreate);
+  }, [type]);
 
-    return function cleanup() {
-      synthToCreate.dispose();
-    };
-  }, []);
-
-  return synth;
+  return instrument;
 }

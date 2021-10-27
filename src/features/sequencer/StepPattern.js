@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useSynth } from '../../hooks';
 import { Part, Transport } from 'tone';
 import styles from './StepPattern.module.css';
 import classNames from 'classnames';
@@ -14,13 +13,11 @@ import {
   changeStepLength,
 } from './sequencerSlice';
 
-export default function StepPattern({ playing }) {
+export default function StepPattern({ playing, instrument, instrumentName }) {
   const [currentColumn, setCurrentColumn] = useState(null);
 
   const grid = useSelector(selectGrid);
   const steplength = useSelector(selectStepLength);
-
-  const synth = useSynth();
 
   const dispatch = useDispatch();
 
@@ -62,10 +59,10 @@ export default function StepPattern({ playing }) {
       setCurrentColumn(index);
 
       if (isActive) {
-        synth.triggerAttackRelease(note, `${steplength}n`, time, velocity);
+        instrument.triggerAttackRelease(note, `${steplength}n`, time, velocity);
       }
     }, events).start(0);
-  }, [grid, synth, playing, steplength]);
+  }, [grid, instrument, playing, steplength]);
 
   function handleNoteClick(rowIndex, cellIndex) {
     dispatch(toggleNoteActive({ rowIndex, cellIndex }));
@@ -117,7 +114,7 @@ export default function StepPattern({ playing }) {
   return (
     <div className={styles.container}>
       <div className={classNames(styles.header, 'p5')}>
-        <p>Synth 1</p>
+        <p>{instrumentName}</p>
 
         <div className="df">
           <select

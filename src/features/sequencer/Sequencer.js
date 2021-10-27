@@ -1,18 +1,31 @@
+import { Listbox, ListboxOption } from '@reach/listbox';
+import '@reach/listbox/styles.css';
 import StepPattern from './StepPattern';
 import IconButton from '../../components/buttons/IconButton';
-import { selectBpm, selectVolume, setBpm } from './sequencerSlice';
+import {
+  changeInstrument,
+  selectBpm,
+  selectInstrument,
+  selectVolume,
+  setBpm,
+  availableInstruments,
+} from './sequencerSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { useInstrument } from '../../hooks';
 import { start, getDestination, Transport } from 'tone';
 import { MdPlayArrow, MdStop } from 'react-icons/md';
 
 export default function Sequencer() {
   const bpm = useSelector(selectBpm);
   const volume = useSelector(selectVolume);
+  const selectedInstrument = useSelector(selectInstrument);
 
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [loopLength, setLoopLength] = useState(1);
+
+  const toneInstrument = useInstrument(selectedInstrument.type);
 
   const dispatch = useDispatch();
 
@@ -52,6 +65,14 @@ export default function Sequencer() {
     dispatch(setBpm(Number(event.target.value)));
   }
 
+  function handleChangeInstrument(instrumentType) {
+    dispatch(
+      changeInstrument(
+        availableInstruments.find((inst) => inst.type === instrumentType)
+      )
+    );
+  }
+
   return (
     <div>
       <label htmlFor="bars">Bars</label>
@@ -68,7 +89,7 @@ export default function Sequencer() {
         type="range"
         min="40"
         max="200"
-        defaultValue="120"
+        value={bpm}
         onChange={handleChangeBpm}
       />
 
@@ -76,7 +97,24 @@ export default function Sequencer() {
         {!playing ? <MdPlayArrow /> : <MdStop />}
       </IconButton>
 
-      <StepPattern playing={playing}></StepPattern>
+      <Listbox
+        value={selectedInstrument.type}
+        onChange={handleChangeInstrument}
+      >
+        {availableInstruments.map((instrument) => {
+          return (
+            <ListboxOption key={instrument.type} value={instrument.type}>
+              {instrument.name}
+            </ListboxOption>
+          );
+        })}
+      </Listbox>
+
+      <StepPattern
+        playing={playing}
+        instrument={toneInstrument}
+        instrumentName={selectedInstrument.name}
+      ></StepPattern>
     </div>
   );
 }

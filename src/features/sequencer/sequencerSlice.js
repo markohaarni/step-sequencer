@@ -4,6 +4,14 @@ const initialNotes = ['F4', 'Eb4', 'C4', 'Bb3', 'Ab3', 'F3'];
 const initialStepLength = 16;
 const initialSteps = 16;
 
+export const availableInstruments = [
+  { name: 'PolySynth', type: 'polySynth' },
+  { name: 'MembraneSynth', type: 'membraneSynth' },
+  { name: 'DuoSynth', type: 'duoSynth' },
+  { name: 'MetalSynth', type: 'metalSynth' },
+  { name: 'PluckSynth', type: 'pluckSynth' },
+];
+
 function buildRow(note, subDivisions) {
   const row = { note, cells: [] };
   for (let i = 0; i < subDivisions; i++) {
@@ -27,8 +35,9 @@ export const slice = createSlice({
     bpm: 120,
     volume: -10,
     grid: buildGrid(initialNotes, initialSteps),
-    steps: initialSteps, // Number if steps in the grid: ;
+    steps: initialSteps, // Number if steps in the grid
     stepLength: initialStepLength, // Length of each step (8th note, 16th note)
+    selectedInstrument: availableInstruments[0],
   },
   reducers: {
     incrementBpm: (state) => {
@@ -77,6 +86,11 @@ export const slice = createSlice({
     changeStepLength: (state, action) => {
       state.stepLength = action.payload;
     },
+    changeInstrument: (state, action) => {
+      if (action.payload) {
+        state.selectedInstrument = action.payload;
+      }
+    },
   },
 });
 
@@ -88,6 +102,7 @@ export const {
   toggleNoteActive,
   changeStepAmount,
   changeStepLength,
+  changeInstrument,
 } = slice.actions;
 
 export const selectBpm = (state) => state.sequencer.bpm;
@@ -95,5 +110,6 @@ export const selectVolume = (state) => state.sequencer.volume;
 export const selectGrid = (state) => state.sequencer.grid;
 export const selectSteps = (state) => state.sequencer.steps;
 export const selectStepLength = (state) => state.sequencer.stepLength;
+export const selectInstrument = (state) => state.sequencer.selectedInstrument;
 
 export default slice.reducer;
