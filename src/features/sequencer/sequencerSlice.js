@@ -38,6 +38,7 @@ export const slice = createSlice({
     steps: initialSteps, // Number if steps in the grid
     stepLength: initialStepLength, // Length of each step (8th note, 16th note)
     selectedInstrument: availableInstruments[0],
+    transportPosition: null, // The Tone.js Transport's position in Bars:Beats:Sixteenths
   },
   reducers: {
     incrementBpm: (state) => {
@@ -91,6 +92,9 @@ export const slice = createSlice({
         state.selectedInstrument = action.payload;
       }
     },
+    setTransportPosition: (state, action) => {
+      state.transportPosition = action.payload;
+    },
   },
 });
 
@@ -103,6 +107,7 @@ export const {
   changeStepAmount,
   changeStepLength,
   changeInstrument,
+  setTransportPosition,
 } = slice.actions;
 
 export const selectBpm = (state) => state.sequencer.bpm;
@@ -111,5 +116,7 @@ export const selectGrid = (state) => state.sequencer.grid;
 export const selectSteps = (state) => state.sequencer.steps;
 export const selectStepLength = (state) => state.sequencer.stepLength;
 export const selectInstrument = (state) => state.sequencer.selectedInstrument;
+export const selectTransportPosition = (state) =>
+  state.sequencer.transportPosition;
 
 export default slice.reducer;

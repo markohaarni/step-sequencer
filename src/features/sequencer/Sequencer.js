@@ -1,33 +1,32 @@
-import { Listbox, ListboxOption } from '@reach/listbox';
-import '@reach/listbox/styles.css';
 import StepPattern from './StepPattern';
-import IconButton from '../../components/buttons/IconButton';
 import {
-  changeInstrument,
   selectBpm,
-  selectInstrument,
   selectVolume,
+  selectSteps,
+  selectStepLength,
   setBpm,
-  availableInstruments,
+  selectTransportPosition,
+  setTransportPosition,
 } from './sequencerSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useInstrument } from '../../hooks';
 import { start, getDestination, Transport } from 'tone';
-import { MdPlayArrow, MdStop } from 'react-icons/md';
+import ControlBar from './ControlBar';
 
 export default function Sequencer() {
   const bpm = useSelector(selectBpm);
   const volume = useSelector(selectVolume);
-  const selectedInstrument = useSelector(selectInstrument);
+  const transportPosition = useSelector(selectTransportPosition);
+  const steps = useSelector(selectSteps);
+  const stepLength = useSelector(selectStepLength);
 
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const [loopLength, setLoopLength] = useState(1);
-
-  const toneInstrument = useInstrument(selectedInstrument.type);
 
   const dispatch = useDispatch();
+
+  // Loop length in bars
+  const loopLength = steps / stepLength;
 
   useEffect(() => {
     if (Transport.bpm) {
@@ -49,7 +48,7 @@ export default function Sequencer() {
     if (!playing) {
       Transport.loop = true;
       Transport.loopStart = 0;
-      Transport.loopEnd = '1:0:0';
+      Transport.loopEnd = `${loopLength}:0:0`;
       Transport.start();
       setPlaying(true);
     } else {
@@ -58,6 +57,7 @@ export default function Sequencer() {
       Transport.loop = false;
       Transport.loopEnd = 0;
       setPlaying(false);
+      dispatch(setTransportPosition(null));
     }
   }
 
@@ -65,26 +65,8 @@ export default function Sequencer() {
     dispatch(setBpm(Number(event.target.value)));
   }
 
-  function handleChangeInstrument(instrumentType) {
-    dispatch(
-      changeInstrument(
-        availableInstruments.find((inst) => inst.type === instrumentType)
-      )
-    );
-  }
-
   return (
     <div>
-      <label htmlFor="bars">Bars</label>
-      <input
-        name="bars"
-        type="number"
-        min="1"
-        max="4"
-        defaultValue="1"
-        onChange={(e) => setLoopLength(e.target.value)}
-      />
-
       <input
         type="range"
         min="40"
@@ -93,27 +75,18 @@ export default function Sequencer() {
         onChange={handleChangeBpm}
       />
 
-      <IconButton onClick={play}>
-        {!playing ? <MdPlayArrow /> : <MdStop />}
-      </IconButton>
-
-      <Listbox
-        value={selectedInstrument.type}
-        onChange={handleChangeInstrument}
-      >
-        {availableInstruments.map((instrument) => {
-          return (
-            <ListboxOption key={instrument.type} value={instrument.type}>
-              {instrument.name}
-            </ListboxOption>
-          );
-        })}
-      </Listbox>
+      <ControlBar
+        onPlay={play}
+        playing={playing}
+        loopLength={loopLength}
+        transportPosition={transportPosition}
+        bpm={bpm}
+      />
 
       <StepPattern
         playing={playing}
-        instrument={toneInstrument}
-        instrumentName={selectedInstrument.name}
+        loopLength={loopLength}
+        stepLength={stepLength}
       ></StepPattern>
     </div>
   );

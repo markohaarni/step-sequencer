@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const possibleNotes = [
   'F4',
   'Eb4',
@@ -22,6 +24,7 @@ export default function NoteSelect({
     <select
       value={selectedNote}
       onChange={(e) => onNoteSelect(e.target.value, rowIndex)}
+      className="text-black"
       {...rest}
     >
       {possibleNotes.map((note) => (
@@ -30,3 +33,9 @@ export default function NoteSelect({
     </select>
   );
 }
+
+NoteSelect.propTypes = {
+  selectedNote: PropTypes.string,
+  onNoteSelect: PropTypes.func,
+  rowIndex: PropTypes.number,
+};
