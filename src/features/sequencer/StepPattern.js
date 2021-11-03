@@ -90,12 +90,12 @@ export default function StepPattern({ playing, loopLength, stepLength }) {
     dispatch(changeNote({ newNote, rowIndex }));
   }
 
-  function handleStepAmountChange(event) {
-    dispatch(changeStepAmount(Number(event.target.value)));
+  function handleStepAmountChange(value) {
+    dispatch(changeStepAmount(Number(value)));
   }
 
-  function handleStepLengthChange(event) {
-    dispatch(changeStepLength(Number(event.target.value)));
+  function handleStepLengthChange(value) {
+    dispatch(changeStepLength(Number(value)));
   }
 
   function handleChangeInstrument(instrumentType) {
@@ -158,20 +158,20 @@ export default function StepPattern({ playing, loopLength, stepLength }) {
           })}
         </Listbox>
 
-        <div className="df text-black">
-          <select
+        <div className="df">
+          <Listbox
             defaultValue="16"
             onChange={handleStepLengthChange}
             className="mr5"
           >
-            <option value="8">/8</option>
-            <option value="16">/16</option>
-          </select>
+            <ListboxOption value="8">/8</ListboxOption>
+            <ListboxOption value="16">/16</ListboxOption>
+          </Listbox>
 
-          <select defaultValue="16" onChange={handleStepAmountChange}>
-            <option value="8">8 Steps</option>
-            <option value="16">16 Steps</option>
-          </select>
+          <Listbox defaultValue="16" onChange={handleStepAmountChange}>
+            <ListboxOption value="8">8 Steps</ListboxOption>
+            <ListboxOption value="16">16 Steps</ListboxOption>
+          </Listbox>
         </div>
       </div>
 
@@ -180,7 +180,14 @@ export default function StepPattern({ playing, loopLength, stepLength }) {
   );
 }
 
-function NoteButton({ note, isActive, columnActive, stepLength, onClick, ...rest }) {
+function NoteButton({
+  note,
+  isActive,
+  columnActive,
+  stepLength,
+  onClick,
+  ...rest
+}) {
   return (
     <button
       className={classNames(styles.cell, {

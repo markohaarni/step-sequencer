@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+import { Listbox, ListboxOption } from '@reach/listbox';
+import '@reach/listbox/styles.css';
+import styles from './NoteSelect.module.css';
 
 const possibleNotes = [
   'F4',
@@ -21,16 +24,18 @@ export default function NoteSelect({
   ...rest
 }) {
   return (
-    <select
+    <Listbox
       value={selectedNote}
-      onChange={(e) => onNoteSelect(e.target.value, rowIndex)}
-      className="text-black"
+      onChange={(value) => onNoteSelect(value, rowIndex)}
+      className={styles.noteSelect}
       {...rest}
     >
       {possibleNotes.map((note) => (
-        <option key={note}>{note}</option>
+        <ListboxOption key={note} value={note} className="w-full">
+          {note}
+        </ListboxOption>
       ))}
-    </select>
+    </Listbox>
   );
 }
 
