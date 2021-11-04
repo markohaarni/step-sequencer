@@ -23,7 +23,9 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "test:nowatch": "craco test --watchAll=false",
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -45,15 +47,9 @@
   },
   "devDependencies": {
     "autoprefixer": "^9",
-    "husky": "^7.0.4",
+    "husky": "^7.0.0",
     "postcss": "^7",
     "surge": "^0.23.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn test",
-      "pre-push": "yarn build && surge --project ./build --domain tone-step-sequencer.surge.sh"
-    }
   }
 }
