@@ -41,20 +41,14 @@ export const slice = createSlice({
     transportPosition: null, // The Tone.js Transport's position in Bars:Beats:Sixteenths
   },
   reducers: {
-    incrementBpm: (state) => {
-      state.bpm += 1;
-    },
-    decrementBpm: (state) => {
-      state.bpm -= 1;
-    },
     setBpm: (state, action) => {
       let bpm = action.payload;
       // Make sure that tempo is within acceptable bounds
       if (bpm < 40) {
         bpm = 40;
       }
-      if (bpm > 300) {
-        bpm = 300;
+      if (bpm > 180) {
+        bpm = 180;
       }
       state.bpm = bpm;
     },
@@ -99,8 +93,6 @@ export const slice = createSlice({
 });
 
 export const {
-  incrementBpm,
-  decrementBpm,
   setBpm,
   changeNote,
   toggleNoteActive,

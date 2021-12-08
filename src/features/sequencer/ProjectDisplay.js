@@ -1,5 +1,6 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import InfoBox from './InfoBox';
+import TempoControl from './TempoControl';
 
 export default function ProjectDisplay({ transportPosition, bpm }) {
   let bar = 0,
@@ -9,34 +10,19 @@ export default function ProjectDisplay({ transportPosition, bpm }) {
   }
 
   return (
-    <article className="flex justify-center border border-black rounded px-3 shadow-md w-min">
+    <article className="flex justify-center border border-black rounded px-3 shadow-md w-min bg-white cursor-default">
       <InfoBox value={Number(bar) + 1} label="Bar" className="mr-4" />
       <InfoBox
         value={Number(beat) + 1}
         label="Beat"
         className="pr-2 mr-2 border-r"
       />
-      <InfoBox value={bpm} label="Tempo" />
+      <TempoControl bpm={bpm} />
     </article>
-  );
-}
-
-function InfoBox({ value, label, className }) {
-  return (
-    <section className={classNames(className)}>
-      <p data-testid={`value-${label}`}>{value}</p>
-      <p className="text-xs text-gray-500 uppercase">{label}</p>
-    </section>
   );
 }
 
 ProjectDisplay.propTypes = {
   transportPosition: PropTypes.string,
   bpm: PropTypes.number,
-};
-
-InfoBox.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  label: PropTypes.string,
-  className: PropTypes.string,
 };

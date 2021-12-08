@@ -4,7 +4,6 @@ import {
   selectVolume,
   selectSteps,
   selectStepLength,
-  setBpm,
   selectTransportPosition,
   setTransportPosition,
 } from './sequencerSlice';
@@ -61,20 +60,8 @@ export default function Sequencer() {
     }
   }
 
-  function handleChangeBpm(event) {
-    dispatch(setBpm(Number(event.target.value)));
-  }
-
   return (
     <div>
-      <input
-        type="range"
-        min="40"
-        max="200"
-        value={bpm}
-        onChange={handleChangeBpm}
-      />
-
       <ControlBar
         onPlay={play}
         playing={playing}
