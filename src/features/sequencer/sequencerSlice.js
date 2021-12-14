@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 const initialNotes = ['F4', 'Eb4', 'C4', 'Bb3', 'Ab3', 'F3'];
 const initialStepLength = 16;
@@ -43,6 +43,11 @@ export const slice = createSlice({
   reducers: {
     setBpm: (state, action) => {
       let bpm = action.payload;
+
+      if (isNaN(bpm) || !bpm) {
+        return;
+      }
+
       // Make sure that tempo is within acceptable bounds
       if (bpm < 40) {
         bpm = 40;
@@ -108,7 +113,13 @@ export const selectGrid = (state) => state.sequencer.grid;
 export const selectSteps = (state) => state.sequencer.steps;
 export const selectStepLength = (state) => state.sequencer.stepLength;
 export const selectInstrument = (state) => state.sequencer.selectedInstrument;
-export const selectTransportPosition = (state) =>
-  state.sequencer.transportPosition;
+export const selectTransportPosition = createSelector(
+  [
+    (state) =>
+      state.sequencer.transportPosition &&
+      state.sequencer.transportPosition.substring(0, 3),
+  ],
+  (transportPosition) => transportPosition
+);
 
 export default slice.reducer;
