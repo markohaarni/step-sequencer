@@ -125,7 +125,7 @@ export default function StepPattern({ playing, loopLength, stepLength }) {
             onNoteSelect={handleNoteSelect}
           ></NoteSelect>
         </div>
-        <div className={styles.rowCells}>
+        <div className={classNames(styles.rowCells, 'w-full')}>
           {row.cells.map(({ isActive }, cellIndex) => (
             <NoteButton
               note={note}
@@ -143,7 +143,7 @@ export default function StepPattern({ playing, loopLength, stepLength }) {
   });
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, 'w-full max-w-7xl')}>
       <div className={classNames(styles.header, 'p5')}>
         <Listbox
           value={selectedInstrument.type}
