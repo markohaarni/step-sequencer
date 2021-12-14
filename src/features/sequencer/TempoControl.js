@@ -15,7 +15,7 @@ export default function TempoControl({ bpm }) {
     function handlePointerMove(e) {
       document.body.style.cursor = 'auto';
 
-      if (pointerPressed) {
+      if (pointerPressed && e.pointerType === "mouse") {
         document.body.style.cursor = 'ns-resize';
         dispatch(setBpm(bpm + -e.movementY));
       }
